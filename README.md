@@ -1,1 +1,1 @@
-One Rang catalog module
+One Rang catalog module.

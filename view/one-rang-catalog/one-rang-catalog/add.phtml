@@ -1,0 +1,78 @@
+<script src="//cdn.ckeditor.com/4.4.1/standard/ckeditor.js"></script>
+<script>
+	CKEDITOR.replace( 'content' );
+</script>
+
+<?php 
+
+// http://framework.zend.com/manual/2.0/en/modules/zend.form.collections.html
+
+use Zend\Form\Form;
+use Zend\Form\Element;
+
+
+$form = new Form('add-service');
+$form->setAttribute('action', $this->url('zfcadmin/one-rang-catalog/default',array("action"=>"add")));
+$form->setAttribute('method', 'post');
+$form->setAttribute('enctype', 'multipart/form-data');
+$form->prepare();
+
+
+?>
+
+<?php echo $this->form()->openTag($form);?>
+	<div class="row">
+	  <div class="span12">
+			<h1>Добавление услуги</h1>
+	  </div>
+	</div>
+	<br>
+	<div class="row">
+	  <div class="span12">
+			<input type="text" class="input-xxlarge" placeholder="Введите наименование услуги" name="title" style="width:98%;" required>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="span12">
+	  		<strong>Описание услуги - поддерживается html оформление.</strong>
+			<br>
+	  <textarea class="ckeditor" name="content"></textarea>
+	  </div>
+	</div>
+
+	<br>
+	<div class="row">
+	  <div class="span3">
+			<strong>Изображение в каталоге</strong>
+	  </div>
+	  <div class="span9">
+			<input type="file" class="input" id="file" name="image">
+	  </div>
+	</div>
+	<br>
+	<div class="row">
+	  <div class="span3">
+			<strong>Для физических лиц</strong>
+	  </div>
+	  <div class="span9">
+			<input type="checkbox" class="input" id="fisic" name="category[]" value='Физическим лицам' checked>
+	  </div>
+	</div>
+
+	<div class="row">
+	  <div class="span3">
+			<strong>Для юридических лиц</strong>
+	  </div>
+	  <div class="span9">
+			<input type="checkbox" class="input" id="ur" name="category[]" value='Юридическим лицам' checked>
+	  </div>
+	</div>
+	<br>
+	
+	<div class="row">
+	  <div class="span12">
+			<button type="submit" class="btn btn-success">Сохранить</button>
+			<button type="button" onclick="if(confirm('Хотите отменить сохранение?')) window.location.href='<?php echo $this->url('zfcadmin/one-rang-catalog') ?>';" class="btn btn-warning">Отмена</button>
+	  </div>
+	</div>
+<?php echo $this->form()->closeTag();?>

@@ -1,3 +1,49 @@
-<strong>Module:</strong>        OneRangCatalog &raquo;
-<strong>Controller:</strong>    OneRangCatalog &raquo;
-<strong>Action:</strong>        index
+<?php 
+Zend\Paginator\Paginator::setDefaultScrollingStyle('Sliding');
+Zend\View\Helper\PaginationControl::setDefaultViewPartial('partials/tsv_searchpagination.phtml');
+?>
+
+<div class="row">
+  <div class="span4">
+		<a class="btn btn-success" href="<?php  echo $this->url('zfcadmin/one-rang-catalog/default',array("action"=>"add"));?>">Добавить услугу</a>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="span12">
+  
+		<?php
+		foreach ($paginator as $row)
+		{?>
+		
+		 <hr>
+          	<div class="btn-group" style="float:right;">
+			  <div class="btn-group">
+			    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			      Управление
+			      <span class="caret"></span>
+			    </button>
+			    <ul class="dropdown-menu">
+			      <li><a href="<?php echo $this->url('zfcadmin/one-rang-catalog/default', array('action'=>'edit','id'=>$row->__get('id'))) ?>">Редактировать</a></li>
+			      <li><a onclick="if(!confirm('Вы действительно хотите удлаить нанную новость?')) return false;" href="<?php echo $this->url('zfcadmin/one-rang-catalog/default', array('action'=>'delete','id'=>$row->__get('id'))) ?>">Удалить</a></li>
+			    </ul>
+			  </div>
+			</div>
+		 <h1><?php echo $row->__get('title');?></h1>
+
+          <?php if($row->__get('image')) {?><img width="128" src="/img/catalog/<?php echo $row->__get('image');?>" style="float:left;margin: 0px 10px 10px 0px;"><?php }?>
+          <p><?php echo $row->__get('content');?></p>
+        <div style="clear:both;"></div>
+
+		
+			
+			<?php 
+		}
+		?>
+
+		
+<?php 
+	echo $this->paginationcontrol($paginator); 
+?>
+</div>
+</div>	

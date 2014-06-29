@@ -5,4 +5,4 @@
 * The original Module.php is in 'src/TsvUsers' in order to respect PSR-0
 */
 
-require_once __DIR__ . '/src/OneRangeCatalog/Module.php';
+require_once __DIR__ . '/src/OneRangCatalog/Module.php';

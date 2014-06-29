@@ -1,0 +1,36 @@
+{
+"name": "marks12/one-range-catalog",
+"description": "Catalog module",
+"type":         "library",
+"license":      "BSD-3-Clause",
+"homepage":         "https://github.com/marks12/OneRangeCatalog",
+"keywords": [
+"Keyword1",
+"Keyword2",
+         "zf2"
+    ],
+     "authors": [
+          {
+               "name":      "Vladimir Tsarevnikov",
+               "email":     "tsarevnikov.v@gmail.com",
+               "homepage":  "http://serveon.ru/",
+               "role":      "Developer"
+          }
+     ],
+     "minimum-stability": "dev",
+     "require": {
+          "php": ">=5.3.3",
+          "zendframework/zend-cache":                     "~2.1",
+          "marks12/tsv-functions":                        "*"
+     },
+     "suggests": {
+          "zendframework/zend-developer-tools": "Comment0",
+          "zf-commons/zfc-user":                "Comment1",
+          "zf-commons/zfc-user-doctrine-orm":   "Comment2"
+     },
+     "autoload": {
+          "psr-0": {
+               "TsvNews\\": "src/"
+          }
+     }
+}

@@ -2,8 +2,13 @@
 namespace OneRangCatalog\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityRepository;
 
-/** @ORM\Entity */
+/** 
+ * @ORM\Entity(repositoryClass="OneRangCatalog\Repository\OneRangCatalogRepository") 
+ * @ORM\HasLifecycleCallbacks()
+ * 
+ */
 class OneRangCatalog {
 	/**
 	 * @ORM\Id
@@ -135,6 +140,4 @@ class OneRangCatalog {
     	
     	return $dir_path;
     }
-
-    
 }

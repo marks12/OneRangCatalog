@@ -12,7 +12,7 @@ use Zend\Form\Element;
 
 
 $form = new Form('add-service');
-$form->setAttribute('action', $this->url('zfcadmin/one-rang-catalog/default',array("action"=>"add")));
+$form->setAttribute('action', $this->url('zfcadmin/one-rang-catalog/default',array("action"=>"add",'id'=>0,'page'=>$page)));
 $form->setAttribute('method', 'post');
 $form->setAttribute('enctype', 'multipart/form-data');
 $form->prepare();

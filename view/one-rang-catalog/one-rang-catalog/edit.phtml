@@ -12,7 +12,7 @@ use Zend\Form\Element;
 
 
 $form = new Form('add-service');
-$form->setAttribute('action', $this->url('zfcadmin/one-rang-catalog/default',array("action"=>"edit",'id'=>$this->id)));
+$form->setAttribute('action', $this->url('zfcadmin/one-rang-catalog/default',array("action"=>"edit",'id'=>$this->id,'page'=>$page)));
 $form->setAttribute('method', 'post');
 $form->setAttribute('enctype', 'multipart/form-data');
 $form->prepare();
@@ -73,7 +73,7 @@ $form->prepare();
 	<div class="row">
 	  <div class="span12">
 			<button type="submit" class="btn btn-success">Сохранить</button>
-			<button type="button" onclick="if(confirm('Хотите отменить сохранение?')) window.location.href='<?php echo $this->url('zfcadmin/one-rang-catalog') ?>';" class="btn btn-warning">Отмена</button>
+			<button type="button" onclick="if(confirm('Хотите отменить сохранение?')) window.location.href='<?php echo $this->url('zfcadmin/one-rang-catalog/paginator',array("page"=>$page)) ?>';" class="btn btn-warning">Отмена</button>
 	  </div>
 	</div>
 <?php echo $this->form()->closeTag();?>

@@ -31,7 +31,7 @@ return array(
 			                    'default' => array(
 			                        'type'    => 'Segment',
 			                        'options' => array(
-			                            'route'    => '/[:action[/:id[/:page]]]',
+			                            'route'    => '/[:action[/:id[/page/:page]]]',
 			                            'constraints' => array(
 			                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
 			                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -64,7 +64,7 @@ return array(
 			'admin' => array(
 					'one-rang-catalog' => array(
 							'label' => 'Каталог услуг',
-							'route' => 'zfcadmin/one-rang-catalog',
+							'route' => 'zfcadmin/one-rang-catalog/paginator',
 					),
 			),
 	),
@@ -80,9 +80,15 @@ return array(
 							'cache' => 'array',
 							'paths' => array(__DIR__ . '/../src/OneRangCatalog/Entity'),
 					),
+					'onerangcatalog_repo' => array(
+							'class' =>'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+							'cache' => 'array',
+							'paths' => array(__DIR__ . '/../src/OneRangCatalog/Repository'),
+					),
 					'orm_default' => array(
 							'drivers' => array(
 									'OneRangCatalog\Entity' => 'onerangcatalog_entities',
+									'OneRangCatalog\Repository' => 'onerangcatalog_repo',
 							),
 					),
 			),

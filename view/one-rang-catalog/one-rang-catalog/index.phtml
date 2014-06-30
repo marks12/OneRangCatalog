@@ -5,12 +5,15 @@ Zend\View\Helper\PaginationControl::setDefaultViewPartial('partials/tsv_searchpa
 
 <div class="row">
   <div class="span4">
-		<a class="btn btn-success" href="<?php  echo $this->url('zfcadmin/one-rang-catalog/default',array("action"=>"add"));?>">Добавить услугу</a>
+		<a class="btn btn-success" href="<?php  echo $this->url('zfcadmin/one-rang-catalog/default',array("action"=>"add",'id'=>0,'page'=>$page));?>">Добавить услугу</a>
   </div>
 </div>
 <br>
 <div class="row">
   <div class="span12">
+  <?php 
+	echo $this->paginationcontrol($paginator); 
+?>
   
 		<?php
 		foreach ($paginator as $row)
@@ -24,8 +27,8 @@ Zend\View\Helper\PaginationControl::setDefaultViewPartial('partials/tsv_searchpa
 			      <span class="caret"></span>
 			    </button>
 			    <ul class="dropdown-menu">
-			      <li><a href="<?php echo $this->url('zfcadmin/one-rang-catalog/default', array('action'=>'edit','id'=>$row->__get('id'))) ?>">Редактировать</a></li>
-			      <li><a onclick="if(!confirm('Вы действительно хотите удлаить нанную новость?')) return false;" href="<?php echo $this->url('zfcadmin/one-rang-catalog/default', array('action'=>'delete','id'=>$row->__get('id'))) ?>">Удалить</a></li>
+			      <li><a href="<?php echo $this->url('zfcadmin/one-rang-catalog/default', array('action'=>'edit','id'=>$row->__get('id'),'page'=>$this->page)) ?>">Редактировать</a></li>
+			      <li><a onclick="if(!confirm('Вы действительно хотите удлаить нанную новость?')) return false;" href="<?php echo $this->url('zfcadmin/one-rang-catalog/default', array('action'=>'delete','id'=>$row->__get('id'),'page'=>$page)) ?>">Удалить</a></li>
 			    </ul>
 			  </div>
 			</div>

@@ -36,6 +36,7 @@ class OneRangCatalogController extends AbstractActionController
     	$paginator->setCurrentPageNumber($page)
     			  ->setItemCountPerPage(10);
     	
+    	$vm->setVariable('page',$page);
     	$vm->setVariable('paginator',$paginator);
     	$vm->setVariable('catalog',$this->getCatalog());
     	$vm->setVariable('route',$this->getEvent()->getRouteMatch()->getMatchedRouteName());
@@ -75,17 +76,16 @@ class OneRangCatalogController extends AbstractActionController
     					exit('File upload error');
     			}else
     				$catalog->__set('image','none');
-    			
-    			
+
     			
     			$objectManager->flush();
     
-    			return $this->redirect()->toRoute("zfcadmin/one-rang-catalog/paginator");
+    			return $this->redirect()->toRoute("zfcadmin/one-rang-catalog/paginator",array("page"=>$this->getEvent()->getRouteMatch()->getParam('page')));
     		}
     
     	}
     	 
-    	return array();
+    	return array("page"=>$this->getEvent()->getRouteMatch()->getParam('page'));
     }
 
     public function editAction()
@@ -103,7 +103,6 @@ class OneRangCatalogController extends AbstractActionController
     					'id' => (int)$this->getEvent()->getRouteMatch()->getParam('id')
     			)
     	);
-    	
     	
     	if ($request->isPost()) {
     		
@@ -144,13 +143,14 @@ class OneRangCatalogController extends AbstractActionController
     			
     			$objectManager->flush();
     	
-    			return $this->redirect()->toRoute("zfcadmin/one-rang-catalog/paginator");
+    			return $this->redirect()->toRoute("zfcadmin/one-rang-catalog/paginator",array('page'=>(int)$this->getEvent()->getRouteMatch()->getParam('page')));
     		}
     	
     	}
     	else 
     	{
-
+    		$vm->setVariable('page',(int)$this->getEvent()->getRouteMatch()->getParam('page'));
+    		
     		$vm->setVariable('id',$OneRangCatalog->__get("id"));
     		$vm->setVariable('title',$OneRangCatalog->__get("title"));
     		$vm->setVariable('content',$OneRangCatalog->__get("content"));
@@ -183,20 +183,17 @@ class OneRangCatalogController extends AbstractActionController
     	$objectManager->remove($catalog);
     	$objectManager->flush();
         
-        return $this->redirect()->toRoute("zfcadmin/one-rang-catalog/paginator");
+        return $this->redirect()->toRoute("zfcadmin/one-rang-catalog/paginator",array('page'=>$this->getEvent()->getRouteMatch()->getParam('page')));
         
     	return array();
     }
     
-    
-
-       
     private function getCatalog()
     {
     	$objectManager = $this
     	->getServiceLocator()
     	->get('Doctrine\ORM\EntityManager');
-    	 
+    	
     	$OneRangCatalog = $objectManager
     	->getRepository('OneRangCatalog\Entity\OneRangCatalog')
     	->findAll();
@@ -204,19 +201,63 @@ class OneRangCatalogController extends AbstractActionController
     	return $OneRangCatalog;
     }
     
+//     public function getCatalogByPage()
+//     {
+
+    	
+//     	$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+//     	$repository = $entityManager->getRepository('OneRangCatalog\Entity\OneRangCatalog');
+//     	$adapter = new DoctrineAdapter(new ORMPaginator($repository->createQueryBuilder('OneRangCatalog')));
+//     	$paginator = new Paginator($adapter);
+//     	$paginator->setDefaultItemCountPerPage(10);
+    	
+//     	$page = (int)$this->getEvent()->getRouteMatch()->getParam('page');
+    	
+    	
+//     	if($page) $paginator->setCurrentPageNumber($page);
+    	
+//     	return $paginator;
+//     }
     public function getCatalogByPage()
     {
     	$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-    	$repository = $entityManager->getRepository('OneRangCatalog\Entity\OneRangCatalog');
-    	$adapter = new DoctrineAdapter(new ORMPaginator($repository->createQueryBuilder('OneRangCatalog')));
+    	
+    	$category = (int)$this->getEvent()->getRouteMatch()->getParam('category');
+    	if($category)
+    	{
+    		$category_name = $entityManager->getRepository('OneRangCatalog\Entity\Category')->findOneBy(array('id' => $category))->__get('name');
+
+    		$repository = $entityManager->getRepository('OneRangCatalog\Entity\OneRangCatalog')->getFilteredOneRangCatalog($category_name,$entityManager);
+    		
+    		$adapter = new DoctrineAdapter(new ORMPaginator($repository, $fetchJoinCollection = true));
+
+    	}
+    	else 
+    	{
+    		$repository = $entityManager->getRepository('OneRangCatalog\Entity\OneRangCatalog');
+    		$adapter = new DoctrineAdapter(new ORMPaginator($repository->createQueryBuilder('OneRangCatalog')));
+    	}
+    	
     	$paginator = new Paginator($adapter);
-    	$paginator->setDefaultItemCountPerPage(12);
     	
+    	$paginator->setDefaultItemCountPerPage(10);
+    	 
     	$page = (int)$this->getEvent()->getRouteMatch()->getParam('page');
-    	
+    	 
     	if($page) $paginator->setCurrentPageNumber($page);
-    	    	
+    	 
     	return $paginator;
+    }
+    
+    public function getCategory()
+    {
+    	$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+    	 
+    	$dql = "SELECT c from OneRangCatalog\Entity\Category c group by c.name";
+    	//    		where n.start_date<=:date and n.end_date>=:date and n.disabled_news=:disabled_news
+    	$query = $entityManager->createQuery($dql);
+   	 
+    	return  $query->getResult();
     }
 
 }

@@ -260,4 +260,31 @@ class OneRangCatalogController extends AbstractActionController
     	return  $query->getResult();
     }
 
+    public function getCatalogElement($id)
+    {
+    	$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+    	
+    	return $entityManager
+		        ->getRepository('OneRangCatalog\Entity\OneRangCatalog')
+		        ->findOneBy(
+		        		array(
+		        				'id' => (int)$id
+		        		));
+    	
+    }
+    public function getVisibleCatalog()
+    {
+    	if(!method_exists($this, 'getServiceLocator'))
+    	$entityManager = $this->serviceManager->get('doctrine.entitymanager.orm_default');
+    	else
+    	$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+    	
+    	return $entityManager
+		        ->getRepository('OneRangCatalog\Entity\OneRangCatalog')
+		        ->findBy(
+		        		array(
+		        				'disabled' => 0
+		        		));
+    	
+    }
 }

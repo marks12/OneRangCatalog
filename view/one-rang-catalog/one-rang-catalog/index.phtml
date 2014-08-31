@@ -2,12 +2,8 @@
 Zend\Paginator\Paginator::setDefaultScrollingStyle('Sliding');
 Zend\View\Helper\PaginationControl::setDefaultViewPartial('partials/tsv_searchpagination.phtml');
 ?>
+<?php echo $this->partial('OneRangCatalog/partials/add-button', array('page' => $page));?>
 
-<div class="row">
-  <div class="span4">
-		<a class="btn btn-success" href="<?php  echo $this->url('zfcadmin/one-rang-catalog/default',array("action"=>"add",'id'=>0,'page'=>$page));?>">Добавить услугу</a>
-  </div>
-</div>
 <br>
 <div class="row">
   <div class="span12">

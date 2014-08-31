@@ -60,6 +60,40 @@ return array(
 	            ),
         ),
     ),
+   	'console' => array(
+   			'router' => array(
+   					'routes' => array(
+   							'parsesite' => array(
+   									'options' => array(
+   											'route'    => 'parsesite',
+   											'defaults' => array(
+   													'controller' => 'OneRangCatalog\Controller\OneRangCatalog',
+   													'action'     => 'parse'
+   											),
+   									),
+   							),
+   							'getfiles' => array(
+   									'options' => array(
+   											'route'    => 'getfiles',
+   											'defaults' => array(
+   													'controller' => 'OneRangCatalog\Controller\OneRangCatalog',
+   													'action'     => 'getfiles'
+   											),
+   									),
+   							),
+   							'cleardata' => array(
+   									'options' => array(
+   											'route'    => 'cleardata',
+   											'defaults' => array(
+   													'controller' => 'OneRangCatalog\Controller\OneRangCatalog',
+   													'action'     => 'cleardata'
+   											),
+   									),
+   							),
+   					),
+   			),
+   	),
+
 	'navigation' => array(
 			'admin' => array(
 					'one-rang-catalog' => array(
@@ -72,6 +106,10 @@ return array(
         'template_path_stack' => array(
             'OneRangCatalog' => __DIR__ . '/../view',
         ),
+		'template_map' => array(
+				'OneRangCatalog/partials/add-button'				=> __DIR__ . '/../view/partials/add-button.phtml',
+		),
+			
     ),
 	'doctrine' => array(
 			'driver' => array(

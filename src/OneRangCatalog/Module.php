@@ -12,8 +12,12 @@ namespace OneRangCatalog;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
+use Zend\Console\Adapter\AdapterInterface as Console;
 
-class Module implements AutoloaderProviderInterface
+
+class Module implements AutoloaderProviderInterface, ConsoleUsageProviderInterface,     ConfigProviderInterface
 {
     public function getAutoloaderConfig()
     {
@@ -35,6 +39,19 @@ class Module implements AutoloaderProviderInterface
         return include __DIR__ . '/../../config/module.config.php';
     }
 
+    
+    public function getConsoleUsage(Console $console){
+    	return array(
+    			// Describe available commands
+    			'parsesite'    => 'parse site and generate url list to file',
+    			'getfiles'    => 'get urls list from file',
+    			'cleardata'    => 'Delete file with catalog elements',
+    
+    			// Describe expected parameters
+    			array( 'parsesite','Start parse site' ),
+    	);
+    }
+    
     public function onBootstrap(MvcEvent $e)
     {
         // You may not need to do this if you're doing it elsewhere in your

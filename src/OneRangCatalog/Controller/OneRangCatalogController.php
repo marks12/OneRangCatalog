@@ -27,9 +27,7 @@ use Zend\Dom\Query;
 class OneRangCatalogController extends AbstractActionController 
 {
 
-	private $parsedir = "data/parse/site1/";
-	
-	private $parsefile = "catalog.txt";
+
 	
     public function indexAction()
     {
@@ -206,147 +204,7 @@ class OneRangCatalogController extends AbstractActionController
     	return array();
     }
     
-    public function parseAction()
-    {
 
-    	$dir = $this->parsedir;
-    	$file = $this->parsefile;
-
-    	
-
-    	if(!file_exists($dir.$file))
-    	{
-    		$response = ClientStatic::get('http://z500proekty.ru/doma.html?r=aaQ&limit=all');
-    		 
-    		$dom = new Query($response->getBody());
-    		 
-    		// Получаем список проектов в правой части
-    		$results = $dom->execute('.small-views .item a');
-    		
-    		if(!file_exists("data"))
-    			mkdir("data");
-    		
-    		if(!file_exists("data/parse"))
-    			mkdir("data/parse");
-    		
-    		if(!file_exists("data/parse/site1"))
-    			mkdir("data/parse/site1");
-			
-    		$fp = fopen("$dir$file", "w");
-    		
-    		$i = 0;
-    		foreach ($results as $result) {
-    			$href = $result->getAttribute('href')."\n";
-    			
-    			if(preg_match("/([a-z0-9_]+)\.html/is", $href,$href_arr))
-    			{
-					$data_to_save[$href_arr[1].".html\n"] = true;
-    				$i++;
-    			}
-    		}
-    		
-    		if(isset($data_to_save) && is_array($data_to_save))
-    			foreach ($data_to_save as $k=>$v)
-	   				fwrite($fp, $k);
-    			    
-    		fclose($fp);
-			
-    		echo "We are save all catalog\n";
-    		echo "We have ".count($data_to_save)." elements\n";
-    	}
-    	
-    	return "Done! Module works!!!\n";
-    }
-    
-    /**
-     * http://z500proekty.ru/thumb.php?src=res/wizualizacje/Z1/Z1_view1.jpg&size=350&height=197
-     * http://z500proekty.ru/thumb.php?src=res/wizualizacje/Zx29/Zx29_k_view1.jpg&size=350&height=197
-     * http://z500proekty.ru/thumb.php?src=res/wizualizacje/Zx41/Zx41_v1_view1.jpg&size=350&height=197
-     * http://z500proekty.ru/thumb.php?src=res/wizualizacje/Zx38/Zx38_v1_view1.jpg&size=353&height=265
-     * http://z500proekty.ru/thumb.php?src=res/wizualizacje/Zx38/Zx38_view1.jpg&size=353&height=265
-     */
-    
-    public function cleardataAction()
-    {
-    	$dir = $this->parsedir;
-    	$file = $this->parsefile;
-    	
-    	if(file_exists($dir.$file))
-    		unlink($dir.$file);
-
-    	return "Catalog file deleted\n";
-    }
-    
-    public function getfilesAction()
-    {
-    	echo "get files Start\n";
-
-    	$dir = $this->parsedir;
-    	$file = $this->parsefile;
-    	
-    	$site = "";
-    	
-    	echo "Work with $dir$file\n";
-		
-    	$fp = fopen("$dir$file", "r");
-
-    	$str_num = 0;
-    	
-    	$urls = array();
-    	
-    	if(!file_exists($dir."thumb"))
-    		mkdir($dir."thumb");
-    		
-    	
-    	while ($str = fgets($fp))
-    	{
-    		$str_num++;
-    		
-    		$str_arr = explode(".html", $str);
-    		
-    		$_u = explode("_", $str_arr[0]);
-    		
-    		$urls[] = array(
-    			"page" => "http://z500proekty.ru/projekt/".$str,
-    			"thumb" => array(
-    				"main" => "http://z500proekty.ru/thumb.php?src=res/wizualizacje/Z".substr($_u[0],1)."/Z".substr($str_arr[0], 1,1).strtoupper(substr($str_arr[0], 2))."_view1.jpg&size=353&height=265",
-    				"fasad"=> array(
-    					"front" => "http://z500proekty.ru/thumb.php?src=res/elewacje/Z".substr($_u[0],1)."/Z".strtoupper(substr($str_arr[0], 1))."_front.png&size=220",
-    					"tyl" => "http://z500proekty.ru/thumb.php?src=res/elewacje/Z".substr($_u[0],1)."/Z".strtoupper(substr($str_arr[0], 1))."_tyl.png&size=220",
-    					"bok1" => "http://z500proekty.ru/thumb.php?src=res/elewacje/Z".substr($_u[0],1)."/Z".strtoupper(substr($str_arr[0], 1))."_bok1.png&size=220",
-    					"bok2" => "http://z500proekty.ru/thumb.php?src=res/elewacje/Z".substr($_u[0],1)."/Z".strtoupper(substr($str_arr[0], 1))."_bok2.png&size=220",
-    				),
-    			),
-    		);
-    	}
-    	
-    	/**
-    	 * Фасады
-    	 * http://z500proekty.ru/thumb.php?src=res/elewacje/Z38/Z38_D_L_GP_front.png&size=220
-    	 * http://z500proekty.ru/thumb.php?src=res/elewacje/Z7/Z38_P_35_front.png&size=220
-    	 * Схема первый этаж
-    	 * http://z500proekty.ru/thumb.php?src=res/rzuty/Z53/Z53_rzut1.png&size=530
-    	 * 		 второй этаж
-    	 * http://z500proekty.ru/thumb.php?src=res/rzuty/Z53/Z53_rzut2.png&size=530
-    	 * 		 подвал
-    	 * http://z500proekty.ru/thumb.php?src=res/rzuty/Z53/Z53_rzut0.png&size=530
-    	 * Минимальные размеры участка
-    	 * http://z500proekty.ru/thumb.php?src=res/rzuty/Z1/Z1_bl_dzialka.png&size=220
-    	 */
-    	
-    	var_dump($urls[59]);
-    	
-    	fclose($fp);
-    	
-    	echo "We have $str_num row of catalog elements\n";
-
-    	echo "==========================================\n";
-    	echo "We start getting files from sourse server ";
-    	
-    	
-    	return "Get files action finished\n";
-    }
-    
     private function getCatalog()
     {
     	$objectManager = $this

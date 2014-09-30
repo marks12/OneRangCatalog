@@ -14,10 +14,10 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ConsoleUsageProviderInterface;
-use Zend\Console\Adapter\AdapterInterface as Console;
 
 
-class Module implements AutoloaderProviderInterface, ConsoleUsageProviderInterface,     ConfigProviderInterface
+
+class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
     public function getAutoloaderConfig()
     {
@@ -39,18 +39,7 @@ class Module implements AutoloaderProviderInterface, ConsoleUsageProviderInterfa
         return include __DIR__ . '/../../config/module.config.php';
     }
 
-    
-    public function getConsoleUsage(Console $console){
-    	return array(
-    			// Describe available commands
-    			'parsesite'    => 'parse site and generate url list to file',
-    			'getfiles'    => 'get urls list from file',
-    			'cleardata'    => 'Delete file with catalog elements',
-    
-    			// Describe expected parameters
-    			array( 'parsesite','Start parse site' ),
-    	);
-    }
+
     
     public function onBootstrap(MvcEvent $e)
     {
